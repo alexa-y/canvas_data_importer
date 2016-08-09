@@ -1,0 +1,52 @@
+#!/usr/bin/env ruby
+require "bundler/setup"
+require "canvas_data_importer"
+require 'optparse'
+
+options = {}
+OptionParser.new do |opts|
+  opts.banner = "Usage: importer-cli [options]"
+
+  opts.on('--database-name=DATABASE_NAME', 'Name of database [required]') do |name|
+    options[:database_name] = name
+  end
+
+  opts.on('--database-schema=SCHEMA_NAME', 'Name of schema') do |name|
+    options[:database_schema] = name
+  end
+
+  opts.on('--database-host=HOST', 'Host address [defaults to localhost]') do |host|
+    options[:database_host] = host
+  end
+
+  opts.on('--database-port=PORT') do |port|
+    options[:database_port] = port
+  end
+
+  opts.on('--database-username=USERNAME') do |username|
+    options[:database_username] = username
+  end
+
+  opts.on('--database-password=PASSWORD') do |password|
+    options[:database_password] = password
+  end
+
+  opts.on('--dump=DUMP', 'Dump ID (defaults to latest dump available)') do |dump|
+    options[:dump] = dump
+  end
+
+  opts.on('--canvas-data-key=KEY', 'Canvas data API key [required]') do |key|
+    options[:canvas_data_key] = key
+  end
+
+  opts.on('--canvas-data-secret=SECRET', 'Canvas data API secret [required]') do |secret|
+    options[:canvas_data_secret] = secret
+  end
+
+  opts.on('--requests-only', 'Skips loading of non-requests tables') do
+    options[:requests_only] = true
+  end
+end.parse!
+
+importer = CanvasDataImporter::Importer.new options
+importer.import
