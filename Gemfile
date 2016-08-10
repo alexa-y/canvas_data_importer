@@ -7,3 +7,7 @@ gem 'canvas_data_client', github: 'ben-y/canvas_data_client', ref: '7cc21f9a69b0
 group :postgresql do
   gem 'pg', '~> 0.18.4'
 end
+
+group :mysql do
+  gem 'mysql2', '~> 0.4.4'
+end

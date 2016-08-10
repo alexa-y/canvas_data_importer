@@ -5,21 +5,21 @@ require 'optparse'
 
 options = {}
 OptionParser.new do |opts|
-  opts.banner = "Usage: importer-cli [options]"
+  opts.banner = "Usage: cli [options]"
 
   opts.on('--database-name=DATABASE_NAME', 'Name of database [required]') do |name|
     options[:database_name] = name
   end
 
-  opts.on('--database-schema=SCHEMA_NAME', 'Name of schema') do |name|
+  opts.on('--database-schema=SCHEMA_NAME', 'Name of schema (only applicable when database type is postgresql)') do |name|
     options[:database_schema] = name
   end
 
-  opts.on('--database-host=HOST', 'Host address [defaults to localhost]') do |host|
+  opts.on('--database-host=HOST', 'Host address (defaults to localhost)') do |host|
     options[:database_host] = host
   end
 
-  opts.on('--database-port=PORT') do |port|
+  opts.on('--database-port=PORT', 'Defaults to the standard port for the selected database type') do |port|
     options[:database_port] = port
   end
 
@@ -29,6 +29,10 @@ OptionParser.new do |opts|
 
   opts.on('--database-password=PASSWORD') do |password|
     options[:database_password] = password
+  end
+
+  opts.on('--database-type=TYPE', 'Database type (such as mysql, postgresql)') do |type|
+    options[:database_type] = type
   end
 
   opts.on('--dump=DUMP', 'Dump ID (defaults to latest dump available)') do |dump|

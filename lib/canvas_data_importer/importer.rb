@@ -17,7 +17,6 @@ module CanvasDataImporter
     def import(dump = @opts[:dump])
       dump_definition = get_dump_definition(dump)
       schema_definition = @canvas_data_client.schema(dump_definition['schemaVersion'])
-      @adapter.build_tables(schema_definition['schema'])
       Dir.mktmpdir do |dir|
         requests_files = dump_definition['artifactsByTable'].delete 'requests'
         requests_files['files'].each do |file_mapping|
@@ -27,6 +26,7 @@ module CanvasDataImporter
         end
 
         unless @opts[:requests_only]
+          @adapter.build_tables(schema_definition['schema'])
           dump_definition['artifactsByTable'].each do |k, v|
             table_name = v['tableName']
             @logger.info "Downloading and importing into #{table_name}"
