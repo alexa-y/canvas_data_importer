@@ -19,10 +19,12 @@ module CanvasDataImporter
       schema_definition = @canvas_data_client.schema(dump_definition['schemaVersion'])
       Dir.mktmpdir do |dir|
         requests_files = dump_definition['artifactsByTable'].delete 'requests'
-        requests_files['files'].each do |file_mapping|
-          @logger.info "Downloading and importing requests file #{file_mapping['filename']}"
-          file_path = @canvas_data_client.send(:download_raw_file, file_mapping, dir)
-          @adapter.import_requests_from_file(schema_definition['schema']['requests'], file_path)
+        unless @opts[:data_only]
+          requests_files['files'].each do |file_mapping|
+            @logger.info "Downloading and importing requests file #{file_mapping['filename']}"
+            file_path = @canvas_data_client.send(:download_raw_file, file_mapping, dir)
+            @adapter.import_requests_from_file(schema_definition['schema']['requests'], file_path)
+          end
         end
 
         unless @opts[:requests_only]

@@ -50,7 +50,13 @@ OptionParser.new do |opts|
   opts.on('--requests-only', 'Skips loading of non-requests tables') do
     options[:requests_only] = true
   end
+
+  opts.on('--data-only', 'Skips loading of requests table') do
+    options[:data_only] = true
+  end
 end.parse!
+
+raise '--requests-only and --data-only cannot be set at the same time' if options[:requests_only] && options[:data_only]
 
 importer = CanvasDataImporter::Importer.new options
 importer.import
