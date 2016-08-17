@@ -1,0 +1,15 @@
+:database_name: example_database
+:datebase_type: pg
+:database_schema: public
+:database_host: localhost
+:database_port: 5432
+
+# Uncomment these lines if environment requires authentication
+# :database_username: username
+# :database_password: password
+
+:canvas_data_key: abc123
+:canvas_data_secret: abc123
+
+:requests_only: false
+:data_only: false

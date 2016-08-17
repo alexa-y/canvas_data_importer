@@ -2,6 +2,7 @@
 require "bundler/setup"
 require "canvas_data_importer"
 require 'optparse'
+require 'yaml'
 
 options = {}
 OptionParser.new do |opts|
@@ -54,7 +55,16 @@ OptionParser.new do |opts|
   opts.on('--data-only', 'Skips loading of requests table') do
     options[:data_only] = true
   end
+
+  opts.on('--environment=ENVIRONMENT', 'Read configuration options from file in config/environments') do |env|
+    options[:environment] = env
+  end
 end.parse!
+
+if options.key? :environment
+  yaml = YAML.load_file("./config/environments/#{options[:environment]}.yml")
+  options.merge! yaml
+end
 
 raise '--requests-only and --data-only cannot be set at the same time' if options[:requests_only] && options[:data_only]
 

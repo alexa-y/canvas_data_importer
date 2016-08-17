@@ -8,3 +8,5 @@
 /pkg/
 /spec/reports/
 /tmp/
+config/environments/*.yml
+!config/environments/example.yml
