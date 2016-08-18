@@ -3,6 +3,8 @@ require 'byebug'
 
 module CanvasDataImporter
   class Importer
+    include CanvasDataImporter::Helpers::Sanitizer
+
     attr_accessor :opts, :canvas_data_client, :adapter
 
     def initialize(opts = {})
@@ -23,6 +25,7 @@ module CanvasDataImporter
           requests_files['files'].each do |file_mapping|
             @logger.info "Downloading and importing requests file #{file_mapping['filename']}"
             file_path = @canvas_data_client.send(:download_raw_file, file_mapping, dir)
+            escape_and_encode_file(file_path)
             @adapter.import_requests_from_file(schema_definition['schema']['requests'], file_path)
           end
         end
@@ -34,6 +37,7 @@ module CanvasDataImporter
             @logger.info "Downloading and importing into #{table_name}"
             v['files'].each do |file_mapping|
               file_path = @canvas_data_client.send(:download_raw_file, file_mapping, dir)
+              escape_and_encode_file(file_path)
               @adapter.import_data_from_file(table_name, file_path)
             end
           end
