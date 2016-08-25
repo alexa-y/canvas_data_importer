@@ -1,12 +1,11 @@
 module CanvasDataImporter::Adapters
   class PostgresqlAdapter < AbstractAdapter
-    require 'pg'
-
     register_adapter 'postgres'
     register_adapter 'pg'
     register_adapter 'postgresql'
 
     def initialize(opts = {})
+      require 'pg'
       super
       @database_port ||= 5432
       @database_host ||= 'localhost'

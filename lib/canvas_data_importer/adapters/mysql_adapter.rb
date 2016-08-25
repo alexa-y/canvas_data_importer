@@ -1,10 +1,10 @@
 module CanvasDataImporter::Adapters
   class MysqlAdapter < AbstractAdapter
-    require 'mysql2'
 
     register_adapter 'mysql'
 
     def initialize(opts = {})
+      require 'mysql2'
       super
       @database_port ||= 3306
       @database_host ||= 'localhost'
